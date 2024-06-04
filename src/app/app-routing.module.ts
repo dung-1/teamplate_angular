@@ -10,18 +10,19 @@ import { ProductDetailComponent } from './pages/product/product-detail/product-d
 import { BlogDetailComponent } from './pages/blog/blog-detail/blog-detail.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent },
   { path: 'service', component: ServiceComponent },
   { path: 'product', component: ProductComponent },
   { path: 'blog', component: BlogComponent },
   { path: 'product/product-detail', component: ProductDetailComponent },
   { path: 'blog/blog-detail', component: BlogDetailComponent },
-  { path: 'contact', component: ContactComponent }
+  { path: 'contact', component: ContactComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
