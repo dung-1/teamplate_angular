@@ -13,6 +13,7 @@ import { ProductDetailComponent } from './pages/product/product-detail/product-d
 import { BlogComponent } from './pages/blog/blog.component';
 import { BlogDetailComponent } from './pages/blog/blog-detail/blog-detail.component';
 import { HeaderComponent } from './shared/header/header.component';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { HeaderComponent } from './shared/header/header.component';
     AppRoutingModule
   ],
   providers: [
-    provideClientHydration()
+
+
   ],
   bootstrap: [AppComponent]
 })

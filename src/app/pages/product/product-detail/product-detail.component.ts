@@ -15,6 +15,7 @@ export class ProductDetailComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.productId = params.get('id') || '';
       // Gọi API hoặc service để lấy thông tin chi tiết của sản phẩm dựa trên productId
+  
     });
   }
 }
