@@ -496,7 +496,7 @@ section {
 .hero {
     width: 100%;
     min-height: 100vh;
-    background: url("../images/hero-bg.jpg") top center;
+    background: url("../images/image-noithat/banner-home.png") top center;
     background-size: cover;
     position: relative;
     padding: 120px 0;
