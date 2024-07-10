@@ -19,6 +19,9 @@ import { ContactComponent } from './user/pages/contact/contact.component';
 import { ProductDetailComponent } from './user/pages/product/product-detail/product-detail.component';
 import { BlogComponent } from './user/pages/blog/blog.component';
 import { BlogDetailComponent } from './user/pages/blog/blog-detail/blog-detail.component';
+import { ProductManagementComponent } from './admin/product-management/product-management.component';
+import { NewsManagementComponent } from './admin/news-management/news-management.component';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -32,6 +35,9 @@ import { BlogDetailComponent } from './user/pages/blog/blog-detail/blog-detail.c
     ProductDetailComponent,
     BlogComponent,
     BlogDetailComponent,
+    ProductManagementComponent,
+    NewsManagementComponent,
+    LoginComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule,RouterModule,
     CommonModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, HttpClientModule
