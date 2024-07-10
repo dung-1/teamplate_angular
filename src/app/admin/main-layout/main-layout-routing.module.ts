@@ -5,12 +5,13 @@ import { MainLayoutComponent } from './main-layout.component';
 import { HomeComponent } from '../home/home.component';
 import { NewsManagementComponent } from '../news-management/news-management.component';
 import { ProductManagementComponent } from '../product-management/product-management.component';
+import { AuthGuard } from '../../../service/authguard.service';
 
 const routes: Routes = [
   {
     path: 'admin',
     component: MainLayoutComponent,
-
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'statical-management',

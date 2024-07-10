@@ -39,16 +39,23 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const username = this.loginForm.value.username;
       const password = this.loginForm.value.password;
-
+  
       this.apiService
         .post(`${ConstService.Authention}/signin`, { username, password })
         .pipe(catchError(this.handleError))
         .subscribe(
           (data: any) => {
-            // Upon successful login, extract the token from the response (modify based on your API structure)
-            const token = data.token || data.accessToken || null; // Check for different token property names
-            this.authService.setToken(token);
-            this.router.navigate(['']);
+            // Extract the token and roles from the response
+            const token = data.token || data.accessToken || null;
+            const roles = data.roles || [];
+  
+            if (roles.includes('ROLE_ADMIN')) {
+              this.authService.setToken(token);
+              this.authService.setRoles(roles);
+              this.router.navigate(['admin']);
+            } else {
+              alert('Bạn không có quyền truy cập vào trang này!');
+            }
           },
           (error: any) => {
             console.error(error);
@@ -61,7 +68,7 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/login']);
     }
   }
-
+  
   private handleError(error: any): Observable<any> {
     console.error(error);
     return throwError(error);

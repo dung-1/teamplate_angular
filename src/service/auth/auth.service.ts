@@ -44,4 +44,17 @@ export class AuthService {
     return this.lang;
   }
 
+  getRoles(): string[] {
+    const roles = localStorage.getItem('roles');
+    return roles ? JSON.parse(roles) : [];
+  }
+
+  setRoles(roles: string[]): void {
+    localStorage.setItem('roles', JSON.stringify(roles));
+  }
+  isAdmin(): boolean {
+    const roles = this.getRoles();
+    return roles.includes('ROLE_ADMIN');
+  }
+
 }
