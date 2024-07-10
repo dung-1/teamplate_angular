@@ -1,48 +1,36 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import {
-  BrowserModule,
-  provideClientHydration,
-} from '@angular/platform-browser';
-import { SharedModule } from './user/shared/app.shared.module';
+import {BrowserModule} from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './user/pages/home/home.component';
-import { AboutComponent } from './user/pages/about/about.component';
-import { ServiceComponent } from './user/pages/service/service.component';
-import { ProductComponent } from './user/pages/product/product.component';
-import { ContactComponent } from './user/pages/contact/contact.component';
-import { ProductDetailComponent } from './user/pages/product/product-detail/product-detail.component';
-import { BlogComponent } from './user/pages/blog/blog.component';
-import { BlogDetailComponent } from './user/pages/blog/blog-detail/blog-detail.component';
-import { ProductManagementComponent } from './admin/product-management/product-management.component';
-import { NewsManagementComponent } from './admin/news-management/news-management.component';
 import { LoginComponent } from './login/login.component';
-
-
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    AboutComponent,
-    ServiceComponent,
-    ProductComponent,
-    ContactComponent,
-    ProductDetailComponent,
-    BlogComponent,
-    BlogDetailComponent,
-    ProductManagementComponent,
-    NewsManagementComponent,
+
     LoginComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, SharedModule,RouterModule,
+  imports: [BrowserModule, AppRoutingModule,RouterModule,
     CommonModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, HttpClientModule
   ],
-  providers: [provideClientHydration()],
+  providers: [    provideHttpClient(withFetch()),
+
+
+    { provide: MAT_DATE_FORMATS, useValue: MAT_DATE_LOCALE },
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService,
+
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

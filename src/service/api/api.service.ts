@@ -1,10 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, finalize, of } from 'rxjs';
-
-import { AuthService } from '../auth/auth.service';
 import { ConstService } from '../const.service';
-import { LoaderService } from '../loader.service';
+
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +10,6 @@ import { LoaderService } from '../loader.service';
 export class ApiService {
   constructor(
     private http: HttpClient,
-    private authService: AuthService,
-    private loadingService: LoaderService
   ) {}
 
   headers = new HttpHeaders({
