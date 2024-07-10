@@ -17,7 +17,6 @@ import {
 @NgModule({
   declarations: [
     AppComponent,
-
     LoginComponent,
   ],
   imports: [BrowserModule, AppRoutingModule,RouterModule,
