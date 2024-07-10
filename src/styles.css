@@ -1,9 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import '../src/assets/vendor/bootstrap/css/bootstrap.min.css';
-@import '../src/assets/vendor/bootstrap-icons/bootstrap-icons.css';
-@import '../src/assets/vendor/aos/aos.css';
-@import '../src/assets/vendor/glightbox/css/glightbox.min.css';
-@import '../src/assets/vendor/swiper/swiper-bundle.min.css';
-@import '../src/assets/vendor/remixicon/remixicon.css';
-@import '../src/assets/css/main.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+a {
+    cursor: pointer;
+    display: inline-block;
+    padding: 10px;
+}

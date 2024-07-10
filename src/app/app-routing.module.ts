@@ -1,28 +1,44 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { AboutComponent } from './pages/about/about.component';
-import { ServiceComponent } from './pages/service/service.component';
-import { ProductComponent } from './pages/product/product.component';
-import { ContactComponent } from './pages/contact/contact.component';
-import { BlogComponent } from './pages/blog/blog.component';
-import { ProductDetailComponent } from './pages/product/product-detail/product-detail.component';
-import { BlogDetailComponent } from './pages/blog/blog-detail/blog-detail.component';
+import { AuthGuard } from '../service/authguard.service';
+import { LoginComponent } from './login/login.component';
+import { MainLayoutComponent } from './admin/main-layout/main-layout.component';
+import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MainLayoutModule } from './admin/main-layout/main-layout.module';
+import { AppLayoutModule } from './user/pages/app-layout/app-layout.module';
+import { AppLayoutComponent } from './user/pages/app-layout/app-layout.component';
+
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'service', component: ServiceComponent },
-  { path: 'product', component: ProductComponent },
-  { path: 'blog', component: BlogComponent },
-  { path: 'product/product-detail', component: ProductDetailComponent },
-  { path: 'blog/blog-detail', component: BlogDetailComponent },
-  { path: 'contact', component: ContactComponent },
+  { path: '', redirectTo: '', pathMatch: 'full' },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/main-layout/main-layout.module').then(m => m.MainLayoutModule),
+    canActivate: [AuthGuard]
+
+  },
+  {
+    path: '',
+    component: AppLayoutComponent,
+  }
+
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    CommonModule,
+    BrowserModule,
+    RouterModule.forRoot(routes),
+    NgbModule,
+    MainLayoutModule,
+    AppLayoutModule
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
