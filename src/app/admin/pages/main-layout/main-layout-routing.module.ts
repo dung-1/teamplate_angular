@@ -5,7 +5,8 @@ import { MainLayoutComponent } from './main-layout.component';
 import { HomeComponent } from '../home/home.component';
 import { NewsManagementComponent } from '../news-management/news-management.component';
 import { ProductManagementComponent } from '../product-management/product-management.component';
-import { AuthGuard } from '../../../service/authguard.service';
+import { AuthGuard } from '../../../../service/authguard.service';
+import { ContactManagementComponent } from '../contact-management/contact-management.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'product-management',
         component: ProductManagementComponent,
+      },
+      {
+        path: 'contact-management',
+        component: ContactManagementComponent,
       },
     ],
   },
