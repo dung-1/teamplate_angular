@@ -39,28 +39,11 @@
                                 "output": "./svg"
                             }
                         ],
-                        "styles": [
-                            "src/styles.css",
-                            "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-                            "./src/assets/user/vendor/bootstrap-icons/bootstrap-icons.css",
-                            "./src/assets/user/vendor/aos/aos.css",
-                            "./src/assets/user/vendor/glightbox/css/glightbox.min.css",
-                            "./src/assets/user/vendor/swiper/swiper-bundle.min.css",
-                            "./src/assets/user/vendor/remixicon/remixicon.css",
-                            "./src/assets/user/css/main.css"
-                        ],
+                        "styles": ["src/styles.css"],
                         "stylePreprocessorOptions": {
                             "includePaths": ["src"]
                         },
-                        "scripts": [
-                            "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-                            "./src/assets/user/vendor/aos/aos.js",
-                            "./src/assets/user/vendor/glightbox/js/glightbox.min.js",
-                            "./src/assets/user/vendor/swiper/swiper-bundle.min.js",
-                            "./src/assets/user/vendor/isotope-layout/isotope.pkgd.min.js",
-                            "./src/assets/user/vendor/php-email-form/validate.js",
-                            "./src/assets/user/js/main.js"
-                        ],
+                        "scripts": [],
                         "server": "src/main.server.ts",
                         "prerender": true,
                         "ssr": {
@@ -126,28 +109,11 @@
                             }
                         ],
 
-                        "styles": [
-                            "src/styles.css",
-                            "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-                            "./src/assets/vendor/bootstrap-icons/bootstrap-icons.css",
-                            "./src/assets/vendor/aos/aos.css",
-                            "./src/assets/vendor/glightbox/css/glightbox.min.css",
-                            "./src/assets/vendor/swiper/swiper-bundle.min.css",
-                            "./src/assets/vendor/remixicon/remixicon.css",
-                            "./src/assets/css/main.css"
-                        ],
+                        "styles": [],
                         "stylePreprocessorOptions": {
                             "includePaths": ["src"]
                         },
-                        "scripts": [
-                            "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-                            "./src/assets/vendor/aos/aos.js",
-                            "./src/assets/vendor/glightbox/js/glightbox.min.js",
-                            "./src/assets/vendor/swiper/swiper-bundle.min.js",
-                            "./src/assets/vendor/isotope-layout/isotope.pkgd.min.js",
-                            "./src/assets/vendor/php-email-form/validate.js",
-                            "./src/assets/js/main.js"
-                        ]
+                        "scripts": []
                     }
                 }
             }
