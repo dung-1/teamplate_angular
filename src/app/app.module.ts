@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -14,6 +14,7 @@ import {
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
+import { authInterceptor } from '../service/auth/AuthInterceptor.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +23,8 @@ import {
   imports: [BrowserModule, AppRoutingModule,RouterModule,
     CommonModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, HttpClientModule
   ],
-  providers: [    provideHttpClient(withFetch()),
+  providers: [         
+     provideHttpClient(withInterceptors([authInterceptor])),
 
 
     { provide: MAT_DATE_FORMATS, useValue: MAT_DATE_LOCALE },
