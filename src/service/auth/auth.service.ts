@@ -1,13 +1,15 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConstService } from '../const.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   //endpoint: string = 'http://192.168.24.32:8080';
+  
   endpoint: string = ConstService.serverHost();
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   token = '';
@@ -18,6 +20,7 @@ export class AuthService {
   constructor(
     private http: HttpClient, 
     public router: Router, 
+    @Inject(PLATFORM_ID) private platformId: Object
 
   ) {}
   setToken(token: string): void {
@@ -25,7 +28,10 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('token');
+    }
+    return null;
   }
 
   isLoggedIn(): boolean {

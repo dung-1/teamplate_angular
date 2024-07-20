@@ -1,0 +1,17 @@
+/* Thêm vào file styles.css hoặc file CSS của component */
+
+.datatable-row-even {
+    background-color: #f9f9f9;
+}
+
+.datatable-row-odd {
+    background-color: #ffffff;
+}
+
+
+/* Thêm vào file styles.css hoặc file CSS của component */
+
+.datatable-row {
+    margin-bottom: 100px;
+    /* Khoảng cách giữa các hàng */
+}

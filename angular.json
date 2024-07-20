@@ -39,16 +39,17 @@
                                 "output": "./svg"
                             }
                         ],
-                        "styles": ["src/styles.css"],
+                        "styles": [
+                            "src/styles.css"
+                        ],
                         "stylePreprocessorOptions": {
                             "includePaths": ["src"]
                         },
                         "scripts": [],
                         "server": "src/main.server.ts",
-                        "prerender": true,
-                        "ssr": {
-                            "entry": "server.ts"
-                        }
+                        "prerender": false,
+                        "ssr": false
+
                     },
                     "configurations": {
                         "production": {

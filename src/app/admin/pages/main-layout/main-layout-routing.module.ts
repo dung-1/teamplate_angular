@@ -7,6 +7,7 @@ import { NewsManagementComponent } from '../news-management/news-management.comp
 import { ProductManagementComponent } from '../product-management/product-management.component';
 import { AuthGuard } from '../../../../service/authguard.service';
 import { ContactManagementComponent } from '../contact-management/contact-management.component';
+import { CategoryManagementComponent } from '../category-management/category-management.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
       {
         path: 'statical-management',
         component: HomeComponent,
+      },
+      {
+        path: 'category-management',
+        component: CategoryManagementComponent,
       },
       {
         path: 'news-management',

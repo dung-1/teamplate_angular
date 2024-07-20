@@ -12,8 +12,20 @@ export class ConstService {
   }
 
   public static readonly FREQUENCY = {};
+  // auth
   public static Authention = 'auth';
   public static GetUsername = 'auth/users';
+  
+  // category
+  public static GetAllCategory = 'categories/all';
+  public static AddCategory = 'categories';
+  public static UpdateCategory = 'categories/update';
+  public static DeleteCategory = 'categories/delete';
 
+  // product
+  public static GetAllProduct = 'product/all';
+  public static AddProduct = 'product';
+  public static UpdateProduct = 'product/update';
+  public static DeleteProduct = 'product/delete';
 
 }

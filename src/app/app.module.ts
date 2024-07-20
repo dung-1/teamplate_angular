@@ -26,6 +26,7 @@ import { authInterceptor } from '../service/auth/AuthInterceptor.service';
   providers: [         
      provideHttpClient(withInterceptors([authInterceptor])),
 
+     provideHttpClient(withFetch()),
 
     { provide: MAT_DATE_FORMATS, useValue: MAT_DATE_LOCALE },
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },

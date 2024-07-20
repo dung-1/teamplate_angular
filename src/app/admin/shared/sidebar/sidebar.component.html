@@ -17,6 +17,12 @@
         </li>
         <!-- End Post -->
         <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" (click)="navigateTo('/admin/category-management')" [class.active]="isActive('/admin/category-management')">
+                <i class="bi bi-table"></i><span>Quản lý thể loại</span>
+            </a>
+        </li>
+        <!-- End Post -->
+        <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" (click)="navigateTo('/admin/product-management')" [class.active]="isActive('/admin/product-management')">
                 <i class="bi bi-menu-button-wide"></i><span>Quản lý sản phẩm</span>
             </a>
