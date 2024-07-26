@@ -23,8 +23,8 @@ export class AppComponent implements OnInit {
           if (event.url.startsWith('/admin')) {
             this.loadAdminStyles();
             this.loadAdminScripts();
-          } else {
-            this.loadUserStyles();
+          } else  {
+            this.loadUserStyles();  
             this.loadUserScripts();
           }
         }
@@ -47,17 +47,6 @@ export class AppComponent implements OnInit {
     );
   }
 
-  loadUserStyles() {
-    this.styleManager.setStyles(
-      'user-theme',
-      'assets/user/vendor/aos/aos.js',
-      'assets/user/vendor/glightbox/js/glightbox.min.js',
-      'assets/user/vendor/swiper/swiper-bundle.min.js',
-      'assets/user/vendor/isotope-layout/isotope.pkgd.min.js',
-      'assets/user/vendor/php-email-form/validate.js',
-      'assets/user/js/main.js'
-    );
-  }
 
   loadAdminScripts() {
     if (isPlatformBrowser(this.platformId)) {
@@ -75,15 +64,27 @@ export class AppComponent implements OnInit {
     }
   }
 
+  loadUserStyles() {
+    this.styleManager.setStyles(
+      'usermanager-theme',
+      'assets/usermanager/vendor/bootstrap/css/bootstrap.min.css',
+      'assets/usermanager/vendor/bootstrap-icons/bootstrap-icons.css',  
+      'assets/usermanager/vendor/aos/aos.css',
+      'assets/usermanager/vendor/glightbox/css/glightbox.min.css',
+      'assets/usermanager/vendor/swiper/swiper-bundle.min.css', 
+      'assets/usermanager/css/main.css'
+    );
+  }
   loadUserScripts() {
     if (isPlatformBrowser(this.platformId)) {
       this.loadScripts(
-        'assets/user/vendor/bootstrap-icons/bootstrap-icons.css',
-        'assets/user/vendor/aos/aos.css',
-        'assets/user/vendor/glightbox/css/glightbox.min.css',
-        'assets/user/vendor/swiper/swiper-bundle.min.css',
-        'assets/user/vendor/remixicon/remixicon.css',
-        'assets/user/css/main.css'
+        'assets/usermanager/vendor/bootstrap/js/bootstrap.bundle.min.js',
+        'assets/usermanager/vendor/aos/aos.js',
+        'assets/vendor/glightbox/js/glightbox.min.js',
+        'assets/usermanager/vendor/swiper/swiper-bundle.min.js',
+        'assets/vendor/Swiper/js/swiper-bundle.min.js',
+        'assets/usermanager/vendor/php-email-form/validate.js',
+        'assets/usermanager/js/main.js'
       );
     }
   }

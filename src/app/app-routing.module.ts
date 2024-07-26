@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MainLayoutModule } from './admin/pages/main-layout/main-layout.module';
-import { AppLayoutModule } from './user/pages/app-layout/app-layout.module';
-import { AppLayoutComponent } from './user/pages/app-layout/app-layout.component';
+import { AppLayoutModule } from './usermanager/pages/app-layout/app-layout.module';
+import { AppLayoutComponent } from './usermanager/pages/app-layout/app-layout.component';
 
 
 const routes: Routes = [

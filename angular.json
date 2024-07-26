@@ -40,10 +40,11 @@
                             }
                         ],
                         "styles": [
-                            "src/styles.css"
+                            "src/styles.css",
+                            "src/styles.scss"
                         ],
                         "stylePreprocessorOptions": {
-                            "includePaths": ["src"]
+                            "includePaths": ["src", "node_modules"]
                         },
                         "scripts": [],
                         "server": "src/main.server.ts",
@@ -110,7 +111,9 @@
                             }
                         ],
 
-                        "styles": [],
+                        "styles": [
+                            "@angular/material/prebuilt-themes/azure-blue.css"
+                        ],
                         "stylePreprocessorOptions": {
                             "includePaths": ["src"]
                         },
