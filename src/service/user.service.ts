@@ -9,7 +9,7 @@ import { ConstService } from './const.service';
   providedIn: 'root'
 })
 export class UserService {
-  user: any = { name: null, userId: null, role: 'ROLE_ADMIN' };
+  user: any = { name: null, userId: null, role: null };
   private userIdSubject: BehaviorSubject<number> = new BehaviorSubject<number>(this.user.userId);
   userId$: Observable<number> = this.userIdSubject.asObservable();
 

@@ -10,6 +10,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { ProductManagementModule } from '../product-management/product-management.module';
 import { CategoryManagementModule } from '../category-management/category-management.module';
+import { NewsManagementModule } from '../news-management/news-management.module';
+import { ContactManagementModule } from '../contact-management/contact-manager.module';
+import { HomeAdminModule } from '../home/home-admin.module';
 
 @NgModule({
   declarations: [MainLayoutComponent],
@@ -23,7 +26,10 @@ import { CategoryManagementModule } from '../category-management/category-manage
     MatPaginatorModule,
     MatSortModule,
     CategoryManagementModule,
-    ProductManagementModule
+    ProductManagementModule,
+    HomeAdminModule,
+    NewsManagementModule,
+    ContactManagementModule
   ],
   exports: [MainLayoutComponent],
 })
