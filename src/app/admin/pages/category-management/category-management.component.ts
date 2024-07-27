@@ -5,23 +5,34 @@ import { UserService } from '../../../../service/user.service';
 import Swal from 'sweetalert2';
 import { NotificationService } from '../../../../service/Notification/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Category } from '../../../../model/category.model';
 
 @Component({
   selector: 'app-category-management',
   templateUrl: './category-management.component.html',
-  styleUrls: ['./category-management.component.css'],
+  styleUrl: './category-management.component.css'
 })
 export class CategoryManagementComponent implements OnInit {
-  categories: any[] = [];
   userId: number | null = null;
-  addCategoryForm: FormGroup | undefined;
-  editCategoryForm: FormGroup ;
+  addCategoryForm: FormGroup;
+  editCategoryForm: FormGroup;
   currentCategoryId: number | null = null;
-
+  categories: Category[] = [
+    { categoryId: 1, name: 'Category 1', description: '', parentId: undefined },
+  ];
+  filteredCategories: Category[] = [];
+  parentCategories: Category[] = [];
   @ViewChild('editTemplate', { static: true }) editTemplate: any;
   @ViewChild('deleteTemplate', { static: true }) deleteTemplate: any;
-
-  columns: any[] = [];
+  columns = [
+    { prop: 'categoryId', name: 'ID' },
+    { prop: 'name', name: 'Tên thể loại' },
+    { prop: 'description', name: 'Mô tả' },
+    { prop: 'parentId', name: 'Thể loại cha' },
+    { name: 'Edit' },
+    { name: 'Delete' }
+  ];
+  offset = 0;
 
   constructor(
     private apiService: ApiService,
@@ -31,24 +42,55 @@ export class CategoryManagementComponent implements OnInit {
   ) {
     this.addCategoryForm = this.fb.group({
       name: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      categoryId: [undefined, Validators.required]
     });
     this.editCategoryForm = this.fb.group({
       name: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      categoryId: [undefined, Validators.required]
     });
   }
+
+  ngOnInit(): void {
+    this.userService.initializeUserFromToken();
+    this.userService.userId$.subscribe((userId) => {
+      if (!this.userId && userId) {
+        this.userId = userId;
+        this.filteredCategories = this.categories;
+        this.loadCategories();
+        this.loadParentCategories();
+      }
+    });
+  }
+
+  updateFilter(event?: any) {
+    const val = event ? event.target.value.toLowerCase() : '';
+    this.filteredCategories = this.categories.filter(category => {
+      return category.name.toLowerCase().includes(val) || category.description.toLowerCase().includes(val);
+    });
+  }
+
+  onPage(event: any) {
+    this.offset = event.offset;
+  }
+
   addCategory() {
     if (this.addCategoryForm && this.addCategoryForm.valid) {
-      const categoryData = this.addCategoryForm.value;
+      const formValue = this.addCategoryForm.value;
+      const categoryData: Partial<Category> = {
+        name: formValue.name,
+        description: formValue.description,
+        parentId: formValue.categoryId
+      };
+
       this.apiService.post(ConstService.AddCategory, categoryData).subscribe(
-        (response) => {
+        (response: Category) => {
           this.notificationService.success('Thêm thể loại thành công.');
-          this.categories.push(response);  // Cập nhật danh sách thể loại
-          this.addCategoryForm?.reset();  // Reset form
+          this.loadCategories();
+          this.addCategoryForm.reset();
           const modalCloseButton = document.querySelector('#exampleModaladd .btn-close') as HTMLElement;
-          modalCloseButton?.click();  // Đóng modal
-          this.loadCategories()
+          modalCloseButton?.click();
         },
         (error) => {
           this.notificationService.error('Có lỗi xảy ra khi thêm thể loại.');
@@ -57,28 +99,36 @@ export class CategoryManagementComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.columns = [
-      { prop: 'categoryId', name: 'ID' },
-      { prop: 'name', name: 'Name' },
-      { prop: 'description', name: 'Description' },
-      { name: 'Edit', cellTemplate: this.editTemplate },
-      { name: 'Delete', cellTemplate: this.deleteTemplate }
-    ];
+  isParentCategory(categoryName: string): boolean {
+    return categoryName === 'sản phẩm' || categoryName === 'tin tức';
+  }
 
-    this.userService.initializeUserFromToken();
-    this.userService.userId$.subscribe((userId) => {
-      if (!this.userId && userId) {
-        this.userId = userId;
-        this.loadCategories();
+  loadParentCategories() {
+    this.apiService.get(ConstService.GetAllCategory).subscribe(
+      (response: Category[]) => {
+        this.parentCategories = response.filter(category =>
+          category.name === 'sản phẩm' || category.name === 'tin tức'
+        );
+      },
+      (error) => {
+        this.notificationService.error('Có lỗi xảy ra khi tải danh sách thể loại cha.');
       }
-    });
+    );
+  }
+
+  getCategoryName(parentId: number | undefined): string {
+    if (parentId === undefined) {
+      return '';
+    }
+    const parentCategory = this.categories.find(cat => cat.categoryId === parentId);
+    return parentCategory ? parentCategory.name : '';
   }
 
   loadCategories() {
     this.apiService.get(`${ConstService.GetAllCategory}`).subscribe(
-      (data) => {
+      (data: Category[]) => {
         this.categories = data;
+        this.updateFilter();
       },
       (error) => {
         console.error('Error fetching categories:', error);
@@ -86,27 +136,33 @@ export class CategoryManagementComponent implements OnInit {
     );
   }
 
-  openEditModal(category: any) {
-    this.currentCategoryId = category.categoryId;
-    this.editCategoryForm.setValue({
-      name: category.name,
-      description: category.description
-    });
+  openEditModal(category: Category) {
+    if (!this.isParentCategory(category.name)) {
+      this.currentCategoryId = category.categoryId;
+      this.editCategoryForm.patchValue({
+        name: category.name,
+        description: category.description,
+        categoryId: category.parentId
+      });
+    }
   }
 
   updateCategory() {
-    if (this.editCategoryForm.valid) {
-      const categoryData = this.editCategoryForm.value;
-      this.apiService.put(`${ConstService.UpdateCategory}/${this.currentCategoryId}`, categoryData).subscribe(
-        (response) => {
-          this.notificationService.success('Chỉnh sửa thể loại thành công.');
-          const index = this.categories.findIndex(category => category.categoryId === this.currentCategoryId);
-          this.categories[index] = response;  // Cập nhật danh sách thể loại
-          this.editCategoryForm.reset();  // Reset form
-          const modalCloseButton = document.querySelector('#exampleModaledit .btn-close') as HTMLElement;
-          modalCloseButton.click();  // Đóng modal
-          this.loadCategories();
+    if (this.editCategoryForm.valid && this.currentCategoryId) {
+      const formValue = this.editCategoryForm.value;
+      const categoryData: Partial<Category> = {
+        name: formValue.name,
+        description: formValue.description,
+        parentId: formValue.categoryId
+      };
 
+      this.apiService.put(`${ConstService.UpdateCategory}/${this.currentCategoryId}`, categoryData).subscribe(
+        (response: Category) => {
+          this.notificationService.success('Chỉnh sửa thể loại thành công.');
+          this.loadCategories();
+          this.editCategoryForm.reset();
+          const modalCloseButton = document.querySelector('#exampleModaledit .btn-close') as HTMLElement;
+          modalCloseButton?.click();
         },
         (error) => {
           this.notificationService.error('Có lỗi xảy ra khi chỉnh sửa thể loại.');
@@ -123,38 +179,21 @@ export class CategoryManagementComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Có, xóa nó đi!',
-      cancelButtonText: 'Không, giữ nguyên'
+      confirmButtonText: 'Vâng, xóa nó!'
     }).then((result) => {
       if (result.isConfirmed) {
         this.apiService.delete(`${ConstService.DeleteCategory}/${categoryId}`).subscribe(
-          () => {
-            this.categories = this.categories.filter(category => category.categoryId !== categoryId);
-            Swal.fire(
-              'Đã xóa!',
-              'Dữ liệu của bạn đã được xóa.',
-              'success'
-            );
+          (response) => {
+            this.notificationService.success('Xóa thể loại thành công.');
+            this.loadCategories();
           },
           (error) => {
-            console.error('Error deleting category:', error);
-            let errorMessage = 'Có lỗi xảy ra khi xóa dữ liệu.';
-
-            if (error.status === 400 && error.error.message.includes('constraint')) {
-              errorMessage = 'Bạn không thể xóa hàng này vì nó đang liên kết với dữ liệu khác.';
-            }
-
-            Swal.fire(
-              'Lỗi!',
-              errorMessage,
-              'error'
-            );
+            this.notificationService.error('Có lỗi xảy ra khi xóa thể loại.');
           }
         );
       }
     });
   }
-
   rowClassFunction = (row: any, index: number) => {
     return index % 2 === 0 ? 'datatable-row-even' : 'datatable-row-odd';
   }

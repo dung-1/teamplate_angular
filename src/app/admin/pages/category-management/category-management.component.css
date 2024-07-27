@@ -1,17 +1,66 @@
-/* Thêm vào file styles.css hoặc file CSS của component */
-
-.datatable-row-even {
-    background-color: #f9f9f9;
+::ng-deep .ngx-datatable.material {
+    box-shadow: none;
 }
 
-.datatable-row-odd {
-    background-color: #ffffff;
+ ::ng-deep .ngx-datatable.material .datatable-header,
+ ::ng-deep .ngx-datatable.material .datatable-footer {
+    background: #f5f5f5;
+}
+
+ ::ng-deep .ngx-datatable.material .datatable-body {
+    background: white;
+}
+
+ ::ng-deep .ngx-datatable.material .datatable-row-center .datatable-body-row {
+    cursor: pointer;
+}
+
+ ::ng-deep .ngx-datatable.material .datatable-row-center .datatable-body-row:hover {
+    background: #f5f5f5;
 }
 
 
-/* Thêm vào file styles.css hoặc file CSS của component */
+/* styles.css */
 
-.datatable-row {
-    margin-bottom: 100px;
-    /* Khoảng cách giữa các hàng */
+
+/* Đường viền giữa các cột */
+
+ngx-datatable.material .datatable-header-cell,
+ngx-datatable.material .datatable-row-group {
+    border-right: 1px solid #ddd;
+}
+
+ngx-datatable.material .datatable-body-cell {
+    border-right: 1px solid #ddd;
+}
+
+
+/* Đường viền bên ngoài */
+
+ngx-datatable.material .datatable-header,
+ngx-datatable.material .datatable-body {
+    border: 1px solid #ddd;
+}
+
+
+/* Đường viền cuối cùng của cột */
+
+ngx-datatable.material .datatable-header-cell:last-child,
+ngx-datatable.material .datatable-body-cell:last-child {
+    border-right: none;
+}
+
+
+/* Đường viền giữa các hàng */
+
+ngx-datatable.material .datatable-body-row {
+    border-bottom: 1px solid #ddd;
+}
+
+
+/* styles.css */
+
+.search-input {
+    margin-bottom: 1rem;
+    display: inline;
 }
