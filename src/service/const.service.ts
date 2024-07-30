@@ -28,4 +28,7 @@ export class ConstService {
   public static UpdateProduct = 'product/update';
   public static DeleteProduct = 'product/delete';
 
+  // contact
+  public static GetAllcontacts = 'contacts';
+  public static Addcontacts = 'contacts';
 }
