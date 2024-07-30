@@ -75,29 +75,29 @@ export class CategoryManagementComponent implements OnInit {
     this.offset = event.offset;
   }
 
-  addCategory() {
-    if (this.addCategoryForm && this.addCategoryForm.valid) {
-      const formValue = this.addCategoryForm.value;
-      const categoryData: Partial<Category> = {
-        name: formValue.name,
-        description: formValue.description,
-        parentId: formValue.categoryId
-      };
+    addCategory() {
+      if (this.addCategoryForm && this.addCategoryForm.valid) {
+        const formValue = this.addCategoryForm.value;
+        const categoryData: Partial<Category> = {
+          name: formValue.name,
+          description: formValue.description,
+          parentId: formValue.categoryId
+        };
 
-      this.apiService.post(ConstService.AddCategory, categoryData).subscribe(
-        (response: Category) => {
-          this.notificationService.success('Thêm thể loại thành công.');
-          this.loadCategories();
-          this.addCategoryForm.reset();
-          const modalCloseButton = document.querySelector('#exampleModaladd .btn-close') as HTMLElement;
-          modalCloseButton?.click();
-        },
-        (error) => {
-          this.notificationService.error('Có lỗi xảy ra khi thêm thể loại.');
-        }
-      );
+        this.apiService.post(ConstService.AddCategory, categoryData).subscribe(
+          (response: Category) => {
+            this.notificationService.success('Thêm thể loại thành công.');
+            this.loadCategories();
+            this.addCategoryForm.reset();
+            const modalCloseButton = document.querySelector('#exampleModaladd .btn-close') as HTMLElement;
+            modalCloseButton?.click();
+          },
+          (error) => {
+            this.notificationService.error('Có lỗi xảy ra khi thêm thể loại.');
+          }
+        );
+      }
     }
-  }
 
   isParentCategory(categoryName: string): boolean {
     return categoryName === 'sản phẩm' || categoryName === 'tin tức';

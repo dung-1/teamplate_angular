@@ -40,12 +40,12 @@ export class ProductManagementComponent implements OnInit {
   ) {
     this.addProductForm = this.fb.group({
       name: ['', Validators.required],
-      description: ['', Validators.required],
-      price: [0, Validators.required],
-      stockQuantity: [0, Validators.required],
+      description: [''],
+      price: [0, [Validators.required, Validators.min(0)]],
+      stockQuantity: [0, [Validators.required, Validators.min(0)]],
       imageUrl: [''],
-      categoryId: [undefined, Validators.required],
-      status: ['Available', Validators.required],
+      categoryId: ['', Validators.required],
+      status: ['', Validators.required],
     });
     this.editProductForm = this.fb.group({
       name: ['', Validators.required],
@@ -114,46 +114,87 @@ export class ProductManagementComponent implements OnInit {
     });
   }
 
-  addProduct(): void {
-    if (this.addProductForm && this.addProductForm.valid && this.userId) {
-      const formValue = this.addProductForm.value;
-      const productData: Partial<ProductDTO> = {
-        name: formValue.name,
-        description: formValue.description,
-        price: formValue.price,
-        stockQuantity: formValue.stockQuantity,
-        imageUrl: formValue.imageUrl,
-        categoryId: Number(formValue.categoryId),
-        status: formValue.status,
-        createdBy: this.userId,
-      };
+  addProduct() {
+    if (this.addProductForm.valid && this.userId) {
+      const productData = this.addProductForm.value;
+
+      // Chuyển đổi giá trị categoryId từ string sang number
+      productData.categoryId = +productData.categoryId;
+      productData.createdBy = this.userId;
+      console.log(
+        'Product data being sent:',
+        JSON.stringify(productData, null, 2)
+      );
+
+      // this.productService.addProduct(productData).subscribe(
       this.apiService.post(ConstService.AddProduct, productData).subscribe(
-        (response: ProductDTO) => {
-          this.notificationService.success('Thêm sản phẩm thành công.');
-          this.addProductForm?.reset();
-          const modalCloseButton = document.querySelector(
-            '#exampleModaladd .btn-close'
-          ) as HTMLElement;
-          modalCloseButton?.click();
-          this.loadProduct();
+        (response) => {
+          console.log('Product added successfully', response);
+          // Đóng modal và làm mới danh sách sản phẩm
+          // Bạn cần thêm logic để đóng modal và cập nhật danh sách sản phẩm ở đây
         },
         (error) => {
-          this.notificationService.error('Có lỗi xảy ra khi thêm sản phẩm.');
-          console.error('Error adding product:', error);
+          console.error('Error adding product', error);
         }
       );
     } else {
-      console.log('Form is invalid');
-      this.notificationService.error(
-        'Vui lòng điền đầy đủ thông tin sản phẩm.'
-      );
+      // Đánh dấu tất cả các trường là đã chạm vào để hiển thị lỗi
+      Object.keys(this.addProductForm.controls).forEach((key) => {
+        const control = this.addProductForm.get(key);
+        if (control) {
+          control.markAsTouched();
+        }
+      });
     }
   }
+
+  // addProduct(): void {
+  //   if (this.addProductForm && this.addProductForm.valid && this.userId) {
+  //     const formValue = this.addProductForm.value;
+  //     const productData: Partial<ProductDTO> = {
+  //       name: formValue.name,
+  //       description: formValue.description,
+  //       price: formValue.price,
+  //       stockQuantity: formValue.stockQuantity,
+  //       imageUrl: formValue.imageUrl,
+  //       categoryId: Number(formValue.categoryId),
+  //       status: formValue.status,
+  //       createdBy: this.userId,
+  //     };
+  //     this.apiService.post(ConstService.AddProduct, productData).subscribe(
+  //       (response: ProductDTO) => {
+  //         this.notificationService.success('Thêm sản phẩm thành công.');
+  //         this.addProductForm?.reset();
+  //         const modalCloseButton = document.querySelector(
+  //           '#exampleModaladd .btn-close'
+  //         ) as HTMLElement;
+  //         modalCloseButton?.click();
+  //         this.loadProduct();
+  //       },
+  //       (error) => {
+  //         this.notificationService.error('Có lỗi xảy ra khi thêm sản phẩm.');
+  //         console.error('Error adding product:', error);
+  //       }
+  //     );
+  //   } else {
+  //     console.log('Form is invalid');
+  //     this.notificationService.error(
+  //       'Vui lòng điền đầy đủ thông tin sản phẩm.'
+  //     );
+  //   }
+  // }
+
   onFileChange(event: any) {
     const file = event.target.files[0];
-    this.addProductForm.patchValue({
-      imageUrl: file
-    });
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.addProductForm.patchValue({
+          imageUrl: e.target.result,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   }
   onPage(event: any) {
     this.offset = event.offset;
