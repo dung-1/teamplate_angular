@@ -148,42 +148,6 @@ export class ProductManagementComponent implements OnInit {
     }
   }
 
-  // addProduct(): void {
-  //   if (this.addProductForm && this.addProductForm.valid && this.userId) {
-  //     const formValue = this.addProductForm.value;
-  //     const productData: Partial<ProductDTO> = {
-  //       name: formValue.name,
-  //       description: formValue.description,
-  //       price: formValue.price,
-  //       stockQuantity: formValue.stockQuantity,
-  //       imageUrl: formValue.imageUrl,
-  //       categoryId: Number(formValue.categoryId),
-  //       status: formValue.status,
-  //       createdBy: this.userId,
-  //     };
-  //     this.apiService.post(ConstService.AddProduct, productData).subscribe(
-  //       (response: ProductDTO) => {
-  //         this.notificationService.success('Thêm sản phẩm thành công.');
-  //         this.addProductForm?.reset();
-  //         const modalCloseButton = document.querySelector(
-  //           '#exampleModaladd .btn-close'
-  //         ) as HTMLElement;
-  //         modalCloseButton?.click();
-  //         this.loadProduct();
-  //       },
-  //       (error) => {
-  //         this.notificationService.error('Có lỗi xảy ra khi thêm sản phẩm.');
-  //         console.error('Error adding product:', error);
-  //       }
-  //     );
-  //   } else {
-  //     console.log('Form is invalid');
-  //     this.notificationService.error(
-  //       'Vui lòng điền đầy đủ thông tin sản phẩm.'
-  //     );
-  //   }
-  // }
-
   onFileChange(event: any) {
     const file = event.target.files[0];
     if (file) {
