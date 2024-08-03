@@ -34,7 +34,7 @@ export class ContactComponent {
     if (this.contactForm.valid) {
       const contactData: ContactDTO = this.contactForm.value;
 
-      this.apiService.post(ConstService.AddProduct, contactData).subscribe(
+      this.apiService.post(ConstService.Addcontacts, contactData).subscribe(
         (response) => {
           this.notificationService.success('Liên hệ của bạn đã được gửi thành công.'); // Thông báo thành công
           this.contactForm.reset();
