@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.loadProduct();
     this.loadContacts();
-    // this.loadPosts(); // Nếu bạn có một API để lấy số lượng bài viết
+    this.loadPosts(); 
   }
 
   loadProduct(): void {
@@ -51,17 +51,17 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  // loadPosts(): void {
-  //   // Giả sử bạn có một API để lấy số lượng bài viết, ví dụ:
-  //   this.apiService.get(ConstService.GetAllPosts).subscribe(
-  //     (data) => {
-  //       this.totalPosts = data.length; // Cập nhật tổng số bài viết
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching posts:', error);
-  //     }
-  //   );
-  // }
+  loadPosts(): void {
+    // Giả sử bạn có một API để lấy số lượng bài viết, ví dụ:
+    this.apiService.get(ConstService.GetAllPost).subscribe(
+      (data) => {
+        this.totalPosts = data.length; // Cập nhật tổng số bài viết
+      },
+      (error) => {
+        console.error('Error fetching posts:', error);
+      }
+    );
+  }
 
   calculateCategoryCounts(): void {
     this.categoryCounts = this.products.reduce((counts, product) => {
