@@ -221,8 +221,9 @@ export class ProductManagementComponent implements OnInit {
       if (this.selectedEditFile) {
         formData.append('file', this.selectedEditFile, this.selectedEditFile.name);
       }
+      // this.apiService.postFormData(ConstService.AddProduct, formData).subscribe(
 
-      this.apiService.putFormData(`product/update/${productId}`, formData).subscribe(
+      this.apiService.putFormData(ConstService.UpdateProduct + productId, formData).subscribe(
         (response) => {
           this.notificationService.success('Cập nhật sản phẩm thành công.');
           this.loadProduct();
