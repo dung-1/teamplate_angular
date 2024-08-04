@@ -5,6 +5,7 @@ import { ConstService } from '../../../../service/const.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { ProductDTO } from '../../../../model/product-dto';
+import { NotificationService } from '../../../../service/Notification/notification.service';
 
 @Component({
   selector: 'app-product-management',
@@ -17,8 +18,7 @@ export class ProductManagementComponent implements OnInit {
   addProductForm: FormGroup;
   editProductForm: FormGroup;
   filteredProduct: ProductDTO[] = [];
-  itemsPerPage = 5; // Số sản phẩm hiển thị mỗi trang
-  totalItems = 0; // Tổng số sản phẩm
+  totalItems : ProductDTO[] = [];
   offset = 0;
   currentProductId: number | null = null;
   columns = [
@@ -30,29 +30,29 @@ export class ProductManagementComponent implements OnInit {
     { prop: 'imageUrl', name: 'Ảnh sản phẩm' },
   ];
   baseUrl: string = 'http://localhost:8081';
-  notificationService: any;
   categories = [{ categoryId: 1, name: 'Category 1' }];
-
+  selectedFile : File | null = null;
+  imageSrc!: string;
   constructor(
     private apiService: ApiService,
     private userService: UserService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private notificationService: NotificationService
   ) {
     this.addProductForm = this.fb.group({
       name: ['', Validators.required],
-      description: [''],
-      price: [0, [Validators.required, Validators.min(0)]],
-      stockQuantity: [0, [Validators.required, Validators.min(0)]],
-      imageUrl: [''],
+      description: ['', Validators.required],
+      price: [0, Validators.required],
+      stockQuantity: [0, Validators.required],
       categoryId: ['', Validators.required],
-      status: ['', Validators.required],
+      status: ['', Validators.required]
     });
+
     this.editProductForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       price: [0, Validators.required],
       stockQuantity: [0, Validators.required],
-      imageUrl: [''],
       categoryId: ['', Validators.required],
       status: ['Available', Validators.required],
     });
@@ -68,7 +68,48 @@ export class ProductManagementComponent implements OnInit {
       }
     });
   }
-
+  addProduct() {
+    if (this.addProductForm.valid && this.userId) {
+      const productData = this.addProductForm.value;
+      productData.categoryId = +productData.categoryId;
+      productData.createdBy = this.userId;
+  
+      const formData = new FormData();
+      formData.append('product', new Blob([JSON.stringify(productData)], {type: 'application/json'}));
+      
+      if (this.selectedFile) {
+        formData.append('file', this.selectedFile, this.selectedFile.name);
+      }
+  
+      this.apiService.postFormData(ConstService.AddProduct, formData).subscribe(
+        (response) => {
+          this.notificationService.success('Thêm sản phẩm thành công.');
+          this.loadProduct();
+          this.addProductForm.reset();
+          const modalCloseButton = document.querySelector('#exampleModaladd .btn-close') as HTMLElement;
+          modalCloseButton?.click();
+          // Thêm logic để đóng modal và cập nhật danh sách sản phẩm
+        },
+        (error) => {
+          this.notificationService.error('Có lỗi xảy ra khi thêm sản phẩm.');
+        }
+      );
+    } else {
+      // Đánh dấu tất cả các trường là đã chạm vào để hiển thị lỗi
+      Object.keys(this.addProductForm.controls).forEach((key) => {
+        const control = this.addProductForm.get(key);
+        if (control) {
+          control.markAsTouched();
+        }
+      });
+    }
+  }
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
   loadCategories(): void {
     this.apiService.get(`${ConstService.GetAllCategory}`).subscribe(
       (data) => {
@@ -84,10 +125,9 @@ export class ProductManagementComponent implements OnInit {
     this.apiService.get(`${ConstService.GetAllProduct}`).subscribe(
       (data) => {
         this.Allproduct = data;
-        this.totalItems = this.Allproduct.length; // Cập nhật tổng số sản phẩm
+        this.totalItems = this.Allproduct; // Cập nhật tổng số sản phẩm
         this.filteredProduct = this.Allproduct.slice(
           this.offset,
-          this.itemsPerPage
         ); // Cập nhật sản phẩm theo phân trang
       },
       (error) => {
@@ -96,9 +136,9 @@ export class ProductManagementComponent implements OnInit {
     );
   }
 
-  getFullImageUrl(imagePath: string): string {
-    if (!imagePath) return ''; // Trả về chuỗi rỗng nếu không có đường dẫn
-    return `${this.baseUrl}${imagePath}`;
+  getFullImageUrl(imageUrl: string): string {
+    if (!imageUrl) return ''; // Trả về chuỗi rỗng nếu không có đường dẫn
+    return `${this.baseUrl}${imageUrl}`;
   }
 
   openEditModal(product: any) {
@@ -114,58 +154,9 @@ export class ProductManagementComponent implements OnInit {
     });
   }
 
-  addProduct() {
-    if (this.addProductForm.valid && this.userId) {
-      const productData = this.addProductForm.value;
 
-      // Chuyển đổi giá trị categoryId từ string sang number
-      productData.categoryId = +productData.categoryId;
-      productData.createdBy = this.userId;
-      console.log(
-        'Product data being sent:',
-        JSON.stringify(productData, null, 2)
-      );
-
-      // this.productService.addProduct(productData).subscribe(
-      this.apiService.post(ConstService.AddProduct, productData).subscribe(
-        (response) => {
-          console.log('Product added successfully', response);
-          // Đóng modal và làm mới danh sách sản phẩm
-          // Bạn cần thêm logic để đóng modal và cập nhật danh sách sản phẩm ở đây
-        },
-        (error) => {
-          console.error('Error adding product', error);
-        }
-      );
-    } else {
-      // Đánh dấu tất cả các trường là đã chạm vào để hiển thị lỗi
-      Object.keys(this.addProductForm.controls).forEach((key) => {
-        const control = this.addProductForm.get(key);
-        if (control) {
-          control.markAsTouched();
-        }
-      });
-    }
-  }
-
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.addProductForm.patchValue({
-          imageUrl: e.target.result,
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-  }
   onPage(event: any) {
     this.offset = event.offset;
-    this.filteredProduct = this.Allproduct.slice(
-      this.offset,
-      this.offset + this.itemsPerPage
-    );
   }
 
   deleteProduct(productId: number): void {
@@ -199,11 +190,10 @@ export class ProductManagementComponent implements OnInit {
         product.name.toLowerCase().includes(value) ||
         this.getCategoryName(product.categoryId).toLowerCase().includes(value)
     );
-    this.totalItems = this.filteredProduct.length;
+    this.totalItems = this.filteredProduct;
     this.offset = 0; // Reset offset khi tìm kiếm
     this.filteredProduct = this.filteredProduct.slice(
       this.offset,
-      this.itemsPerPage
     ); // Cập nhật sản phẩm theo phân trang
   }
 

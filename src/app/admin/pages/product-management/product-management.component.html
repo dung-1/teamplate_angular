@@ -13,7 +13,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form [formGroup]="addProductForm" *ngIf="this.addProductForm" enctype="multipart/form-data">
+                <form [formGroup]="addProductForm" *ngIf="addProductForm" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">Tên sản phẩm</label>
                         <input id="name" name="name" formControlName="name" class="form-control" />
@@ -31,20 +31,20 @@
                         <input id="stockQuantity" formControlName="stockQuantity" name="stockQuantity" type="number" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label for="imageUrl">URL hình ảnh</label>
-                        <input type="file" (change)="onFileChange($event)" id="imageUrl" name="imageUrl" class="form-control" /> </div>
+                        <label for="imageFile">Hình ảnh sản phẩm</label>
+                        <input type="file" (change)="onFileChange($event)" id="imageFile" name="imageFile" class="form-control" />
+                    </div>
                     <div class="form-group">
                         <label for="categoryId">Danh mục</label>
                         <select id="categoryId" name="categoryId" formControlName="categoryId" class="form-control">
-                        <option *ngFor="let category of categories"  [value]="category.categoryId">{{ category.name }}</option>
-                      </select>
+                            <option *ngFor="let category of categories" [value]="category.categoryId">{{ category.name }}</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="status">Trạng thái</label>
                         <input id="status" name="status" formControlName="status" class="form-control" />
                     </div>
                 </form>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -53,6 +53,7 @@
         </div>
     </div>
 </div>
+
 
 <section class="section mt-3">
     <div class="row">
@@ -67,8 +68,7 @@
                     </div>
 
                     <!-- Bảng sản phẩm -->
-                    <ngx-datatable class="material" [rows]="filteredProduct" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [columns]="columns" [rowHeight]="'auto'" [rowClass]="rowClassFunction" [limit]="itemsPerPage" [count]="totalItems" [offset]="offset"
-                        (page)="onPage($event)">
+                    <ngx-datatable class="material" [rows]="filteredProduct" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [columns]="columns" [rowHeight]="'auto'" [rowClass]="rowClassFunction" [limit]="5" [count]="totalItems.length" [offset]="offset" (page)="onPage($event)">
                         <ngx-datatable-column name="Tên sản phẩm">
                             <ng-template let-row="row" ngx-datatable-cell-template>
                                 {{ row.name }}
