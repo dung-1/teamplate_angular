@@ -1,0 +1,13 @@
+<form (ngSubmit)="sendEmail()">
+    <label for="toEmail">Email người nhận:</label>
+    <input type="email" id="toEmail" [(ngModel)]="emailData.toEmail" name="toEmail" required>
+  
+    <label for="subject">Tiêu đề:</label>
+    <input type="text" id="subject" [(ngModel)]="emailData.subject" name="subject" required>
+  
+    <label for="body">Nội dung:</label>
+    <textarea id="body" [(ngModel)]="emailData.body" name="body" required></textarea>
+  
+    <button type="submit">Gửi Email</button>
+  </form>
+  

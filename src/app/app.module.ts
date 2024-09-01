@@ -21,8 +21,9 @@ import {
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
 import { authInterceptor } from '../service/auth/AuthInterceptor.service';
+import { SendmailComponent } from './admin/pages/sendmail/sendmail.component';
 @NgModule({
-  declarations: [AppComponent, LoginComponent],
+  declarations: [AppComponent, LoginComponent, SendmailComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

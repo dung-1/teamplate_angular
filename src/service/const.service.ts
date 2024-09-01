@@ -12,6 +12,10 @@ export class ConstService {
   }
 
   public static readonly FREQUENCY = {};
+
+  // mail
+  public static Senmail = 'email/send';
+  
   // auth
   public static Authention = 'auth';
   public static GetUsername = 'auth/users';
